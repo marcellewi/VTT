@@ -207,3 +207,6 @@ next-env.d.ts
 *.d.ts.map
 
 node_modules/
+node_modules/
+frontend/node_modules/
+**/node_modules/
