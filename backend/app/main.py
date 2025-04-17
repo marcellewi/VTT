@@ -19,7 +19,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Voice to Tool API"}
+    return {"message": "Welcome to Voice to Tool (VTT) API"}
 
 
 if __name__ == "__main__":
