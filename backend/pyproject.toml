@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "vtt-backend"
+version = "0.1.0"
+description = "Voice to Tool - Backend service for voice processing and tool integration"
+authors = ["Marcel Lewi <marchulew@gmail.com>"]
+packages = [{include = "app"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+uvicorn = "^0.27.0"
+pydantic = "^2.5.0"
+python-dotenv = "^1.0.0"
+langchain = "^0.1.0"
+langchain-openai = "^0.0.5"
+langgraph = "^0.0.26"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api" 
