@@ -8,9 +8,11 @@ from database.db import get_session
 from fastapi import Depends, UploadFile
 from sqlmodel import Session
 
+from backend.database.transcription import create_transcription
+
 
 async def transcribe_audio(
-    audio: UploadFile, model_size: str = "base", db: Session = Depends(get_session)
+    audio: UploadFile, model_size: str = "base", session: Session = Depends(get_session)
 ) -> TranscriptionResponse:
     """
     Transcribe an audio file to text using OpenAI's Whisper model
@@ -51,10 +53,7 @@ async def transcribe_audio(
             audio_file_name=audio.filename,
         )
 
-        # Save to database
-        db.add(transcription)
-        db.commit()
-        db.refresh(transcription)
+        await create_transcription(transcription, session)
 
         # Return API response
         return TranscriptionResponse(
