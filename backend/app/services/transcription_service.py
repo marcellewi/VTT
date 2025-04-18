@@ -4,9 +4,10 @@ import tempfile
 import uuid
 
 import whisper
+from app.llm.audio_classifier_graph.chains import AudioClassifierChain
 from app.models.transcription import Transcription, TranscriptionResponse
 from database.db import get_session
-from database.transcription import create_transcription, get_all_transcriptions
+from database.transcription import get_all_transcriptions
 from fastapi import Depends, HTTPException, UploadFile
 from sqlmodel import Session
 
@@ -52,8 +53,18 @@ async def transcribe_audio(
             audio_file_name=audio.filename,
         )
 
+        classifier = AudioClassifierChain(transcription.text)
+        classification = classifier.classify()
+
+        transcription.topic = classification.topic
+        transcription.resume = classification.resume
+
+        logger.info(f"Transcription: {transcription}")
+        logger.info(f"Classification: {classification}")
+        logger.info(f"classifier: {classifier}")
+
         # Create the transcription in the database
-        await create_transcription(transcription, session)
+        # await create_transcription(transcription, session)
 
         return TranscriptionResponse(
             id=transcription.id,

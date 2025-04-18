@@ -21,6 +21,7 @@ class Transcription(SQLModel, table=True):
     confidence: float | None = Field(default=None)
     model_name: str = Field(default="base")  # Store which Whisper model was used
     audio_file_name: str | None = Field(default=None)
+    resume: str | None = Field(default=None)
 
     created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
     is_deleted: bool = Field(default=False)
