@@ -1,4 +1,4 @@
-from app.models.transcription import TranscriptionResponse
+from app.models.transcription import Transcription, TranscriptionResponse
 from app.services import transcription_service
 from database.db import get_session
 from fastapi import APIRouter, Depends, File, UploadFile
@@ -18,3 +18,13 @@ async def transcribe_audio(
     """
 
     return await transcription_service.transcribe_audio(audio, model_size, session)
+
+
+@router.get("", response_model=list[Transcription])
+async def get_transcriptions(
+    session: Session = Depends(get_session),
+):
+    """
+    Get all transcriptions from the database
+    """
+    return await transcription_service.get_transcriptions(session)

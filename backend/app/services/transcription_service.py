@@ -6,7 +6,7 @@ import uuid
 import whisper
 from app.models.transcription import Transcription, TranscriptionResponse
 from database.db import get_session
-from database.transcription import create_transcription
+from database.transcription import create_transcription, get_all_transcriptions
 from fastapi import Depends, HTTPException, UploadFile
 from sqlmodel import Session
 
@@ -69,3 +69,14 @@ async def transcribe_audio(
     finally:
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
+
+
+async def get_transcriptions(session: Session) -> list[Transcription]:
+    """
+    Get all transcriptions from the database
+    """
+    try:
+        return await get_all_transcriptions(session)
+    except Exception as e:
+        logger.error(f"Error getting transcriptions: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
