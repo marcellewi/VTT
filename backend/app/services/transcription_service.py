@@ -29,6 +29,7 @@ async def transcribe_audio(
     Returns:
         TranscriptionResponse with the transcription results
     """
+
     if audio.size > 2 * 1024 * 1024:
         raise HTTPException(status_code=413, detail="File too large")
 
@@ -53,15 +54,15 @@ async def transcribe_audio(
             audio_file_name=audio.filename,
         )
 
-        classifier = AudioClassifierChain(transcription.text)
+        classifier = AudioClassifierChain(result["text"])
         classification = classifier.classify()
 
         transcription.topic = classification.topic
         transcription.resume = classification.resume
 
-        logger.info(f"Transcription: {transcription}")
-        logger.info(f"Classification: {classification}")
-        logger.info(f"classifier: {classifier}")
+        print(f"Transcription: {transcription}")
+        print(f"Classification: {classification}")
+        print(f"classifier: {classifier}")
 
         # Create the transcription in the database
         # await create_transcription(transcription, session)
@@ -76,7 +77,7 @@ async def transcribe_audio(
         )
     except Exception as e:
         logger.error(f"Error transcribing audio: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error transcribing audio: {e}")
     finally:
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
