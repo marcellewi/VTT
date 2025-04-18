@@ -6,7 +6,7 @@ import whisper
 from app.models.transcription import Transcription, TranscriptionResponse
 from database.db import get_session
 from database.transcription import create_transcription
-from fastapi import Depends, UploadFile
+from fastapi import Depends, HTTPException, UploadFile
 from sqlmodel import Session
 
 
@@ -25,6 +25,9 @@ async def transcribe_audio(
     Returns:
         TranscriptionResponse with the transcription results
     """
+    if audio.size > 2 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail="File too large")
+
     with tempfile.NamedTemporaryFile(
         delete=False, suffix=os.path.splitext(audio.filename)[1]
     ) as temp_file:
@@ -57,6 +60,8 @@ async def transcribe_audio(
             model_name=transcription.model_name,
             created_at=transcription.created_at,
         )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)

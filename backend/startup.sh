@@ -14,7 +14,6 @@ fi
 
 # Install backend dependencies
 echo "📦 Installing backend dependencies..."
-cd backend
 poetry install --no-root
 
 # Start backend service

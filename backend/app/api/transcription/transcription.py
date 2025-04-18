@@ -1,6 +1,3 @@
-import os
-import tempfile
-
 from app.models.transcription import TranscriptionResponse
 from app.services import transcription_service
 from database.db import get_session
@@ -19,7 +16,5 @@ async def transcribe_audio(
     """
     Transcribe an audio file to text and save to database
     """
-    with tempfile.NamedTemporaryFile(
-        delete=False, suffix=os.path.splitext(audio.filename)[1]
-    ) as temp_file:
-        return await transcription_service.transcribe_audio(audio, model_size, session)
+
+    return await transcription_service.transcribe_audio(audio, model_size, session)
