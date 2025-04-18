@@ -20,7 +20,15 @@ load_dotenv()
 
 # Import all models here that should be included in migrations
 # Important: Import the model classes, not just the module
+import sys
 
+# Add the parent directory to system path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Now import your models
+from app.models.transcription import Transcription
+
+Transcription()
 # Set target metadata
 target_metadata = SQLModel.metadata
 
