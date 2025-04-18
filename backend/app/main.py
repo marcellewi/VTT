@@ -1,13 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.api import api_router
+
 app = FastAPI(
     title="VTT API",
     description="Voice to Tool API for transcription, classification, and summarization",
     version="0.1.0",
 )
 
-# Configure CORS
+app.include_router(api_router, prefix="/api")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
