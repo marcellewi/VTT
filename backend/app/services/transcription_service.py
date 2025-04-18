@@ -1,3 +1,4 @@
+import logging
 import os
 import tempfile
 import uuid
@@ -8,6 +9,8 @@ from database.db import get_session
 from database.transcription import create_transcription
 from fastapi import Depends, HTTPException, UploadFile
 from sqlmodel import Session
+
+logger = logging.getLogger(__name__)
 
 
 async def transcribe_audio(
@@ -61,6 +64,7 @@ async def transcribe_audio(
             created_at=transcription.created_at,
         )
     except Exception as e:
+        logger.error(f"Error transcribing audio: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         if os.path.exists(temp_file_path):
