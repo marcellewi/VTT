@@ -16,10 +16,12 @@ alembic = "^1.15.2"
 psycopg2-binary = "^2.9.10"
 python-multipart = "^0.0.20"
 pydantic = ">=2,<3"
-langchain = "0.1.11"
-langchain-core = "0.1.29"
-langchain-openai = "0.0.6"
-langgraph = "0.0.26"
+
+# LangChain ecosystem
+langchain       = "0.3.23"    # latest 0.3.x patch :contentReference[oaicite:2]{index=2}
+langchain-core  = "0.3.54"    # latest core 0.3.x patch :contentReference[oaicite:3]{index=3}
+langchain-openai= "0.2.0"     # v0.2.x to match LangChain v0.3 :contentReference[oaicite:4]{index=4}
+langgraph       = "0.2.26"  
 
 [build-system]
 requires = ["poetry-core"]
